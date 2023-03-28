@@ -47,6 +47,7 @@ class LaminasRouterTest extends TestCase
     {
         $router        = new LaminasRouter();
         $laminasRouter = Closure::bind(fn() => $this->laminasRouter, $router, LaminasRouter::class);
+
         self::assertInstanceOf(Closure::class, $laminasRouter);
         self::assertInstanceOf(TreeRouteStack::class, $laminasRouter());
     }
