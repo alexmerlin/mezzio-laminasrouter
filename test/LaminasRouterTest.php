@@ -46,9 +46,8 @@ class LaminasRouterTest extends TestCase
     public function testWillLazyInstantiateALaminasTreeRouteStackIfNoneIsProvidedToConstructor(): void
     {
         $router        = new LaminasRouter();
-        $laminasRouter = Closure::bind(fn() => $this->laminasRouter, $router, LaminasRouter::class);
-        self::assertInstanceOf(Closure::class, $laminasRouter);
-        self::assertInstanceOf(TreeRouteStack::class, $laminasRouter());
+        $laminasRouter = Closure::bind(fn() => $this->laminasRouter, $router, LaminasRouter::class)();
+        self::assertInstanceOf(TreeRouteStack::class, $laminasRouter);
     }
 
     private function createRequest(string $requestMethod = RequestMethod::METHOD_GET): ServerRequestInterface
@@ -66,11 +65,7 @@ class LaminasRouterTest extends TestCase
 
         /** @psalm-var Closure(): list<Route> $fn */
         $fn             = fn(): array => $this->routesToInject;
-        $routesToInject = Closure::bind($fn, $router, LaminasRouter::class);
-        self::assertInstanceOf(Closure::class, $routesToInject);
-
-        /** @psalm-var iterable<mixed, mixed> $routesToInject */
-        $routesToInject = $routesToInject();
+        $routesToInject = Closure::bind($fn, $router, LaminasRouter::class)();
         self::assertContains($route, $routesToInject);
     }
 
